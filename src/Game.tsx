@@ -73,7 +73,7 @@ const Game = () => {
             (square) => x === square.x && y === square.y
           );
 
-          return <Square>{square?.value}</Square>;
+          return <Square key={`${x},${y}`}>{square?.value}</Square>;
         })}
       </SimpleGrid>
     </Card>
