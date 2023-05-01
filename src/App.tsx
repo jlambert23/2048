@@ -1,5 +1,5 @@
-import { ThemeProvider } from "./ThemeProvider";
-import { Game } from "./Game";
+import { ThemeProvider } from "./core/ThemeProvider";
+import { Game } from "./Game/Game";
 import { Center } from "@mantine/core";
 
 export default function App() {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Square, move } from "./game.util";
-import { useKeyPress } from "./use-key-press";
+import { useKeyPress } from "../core/use-key-press";
 
 export const useGame = (initialState: Square[]) => {
   const [squares, setSquares] = useState<Square[]>(initialState);
