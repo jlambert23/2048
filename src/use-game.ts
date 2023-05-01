@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Square, move } from "./game.util";
 import { useKeyPress } from "./use-key-press";
 
-export const useBoard = (initialState: Square[]) => {
+export const useGame = (initialState: Square[]) => {
   const [squares, setSquares] = useState<Square[]>(initialState);
 
   const leftPressed = useKeyPress("ArrowLeft");

@@ -1,6 +1,6 @@
 import { Card, Center, SimpleGrid, useMantineTheme } from "@mantine/core";
 import { useMemo } from "react";
-import { useBoard } from "./use-board";
+import { useGame } from "./use-game";
 
 const Square = ({ children }: { children?: number }) => {
   const { colors } = useMantineTheme();
@@ -26,7 +26,7 @@ const Square = ({ children }: { children?: number }) => {
 };
 
 const Game = () => {
-  const { squares } = useBoard([
+  const { squares } = useGame([
     { x: 1, y: 1, value: 2048 },
     { x: 3, y: 3, value: 1024 },
   ]);
