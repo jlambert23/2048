@@ -1,11 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Square, move } from "./game.util";
 import { useKeyPress } from "./use-key-press";
-
-export type Square = {
-  x: number;
-  y: number;
-  value: number;
-};
 
 export const useBoard = (initialState: Square[]) => {
   const [squares, setSquares] = useState<Square[]>(initialState);
@@ -16,24 +11,17 @@ export const useBoard = (initialState: Square[]) => {
   const downPressed = useKeyPress("ArrowDown");
 
   useEffect(() => {
-    const moveMap: { [direction: string]: (square: Square) => Square } = {
-      left: ({ x, ...rest }) => ({ x: Math.max(x - 1, 0), ...rest }),
-      right: ({ x, ...rest }) => ({ x: Math.min(x + 1, 3), ...rest }),
-      up: ({ y, ...rest }) => ({ y: Math.max(y - 1, 0), ...rest }),
-      down: ({ y, ...rest }) => ({ y: Math.min(y + 1, 3), ...rest }),
-    };
-
     if (leftPressed) {
-      setSquares(squares.map(moveMap.left));
+      setSquares(move("left")(squares));
     }
     if (rightPressed) {
-      setSquares(squares.map(moveMap.right));
+      setSquares(move("right")(squares));
     }
     if (upPressed) {
-      setSquares(squares.map(moveMap.up));
+      setSquares(move("up")(squares));
     }
     if (downPressed) {
-      setSquares(squares.map(moveMap.down));
+      setSquares(move("down")(squares));
     }
   }, [leftPressed, rightPressed, upPressed, downPressed]);
 
