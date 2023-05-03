@@ -29,18 +29,25 @@ export const move = (direction: Direction) => {
   const sortFn = sortMap[direction];
   const to = toMap[direction];
 
-  return (squares: Square[]) => {
-    const groups = groupBy(squares, key);
-    const updatedSquares = [];
+  const moveGroup = (squares: Square[]) => {
+    const sorted = squares.sort(sortFn);
+    return sorted.reduce<Square[]>((updated, square) => {
+      const last = updated.at(-1);
 
-    for (const group of Object.values(groups)) {
-      const updatedGroup: Square[] = [];
-      for (const square of group.sort(sortFn)) {
-        updatedGroup.push({ ...square, ...to(updatedGroup) });
+      // merge squares
+      if (last?.value === square.value) {
+        return [...updated.slice(0, -1), { ...last, value: last.value * 2 }];
       }
-      updatedSquares.push(...updatedGroup);
-    }
 
-    return updatedSquares;
+      return [...updated, { ...square, ...to(updated) }];
+    }, []);
+  };
+
+  return (squares: Square[]) => {
+    const groups = Object.values(groupBy(squares, key));
+    return groups.reduce<Square[]>(
+      (updated, group) => [...updated, ...moveGroup(group)],
+      []
+    );
   };
 };

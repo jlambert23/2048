@@ -8,6 +8,7 @@ const Game = () => {
   const { squares } = useGame([
     { x: 1, y: 1, value: 2048 },
     { x: 3, y: 3, value: 1024 },
+    { x: 2, y: 3, value: 1024 },
   ]);
 
   const board = useMemo(
