@@ -6,11 +6,7 @@ import { useMemo } from "react";
 
 const Game = () => {
   const { squares } = useGame();
-
-  const board = useMemo(
-    () => [...new Array(Math.pow(BOARD_SIZE, 2))],
-    [BOARD_SIZE]
-  );
+  const board = useMemo(() => [...new Array(Math.pow(BOARD_SIZE, 2))], []);
 
   return (
     <Card shadow="sm" withBorder sx={{ height: "60%", aspectRatio: "1 / 1" }}>

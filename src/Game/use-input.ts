@@ -25,6 +25,7 @@ export const useInput = (squares: Square[]) => {
     if (restartPressed) {
       return [];
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leftPressed, rightPressed, upPressed, downPressed, restartPressed]);
 
   return updated;

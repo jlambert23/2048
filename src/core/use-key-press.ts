@@ -22,6 +22,7 @@ const useKeyPress = (targetKey: string) => {
       window.removeEventListener("keydown", keydown);
       window.removeEventListener("keyup", keyup);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return keyPressed;
