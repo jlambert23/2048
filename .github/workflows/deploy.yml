@@ -38,6 +38,7 @@ jobs:
         run: pnpm install
 
   build-and-deploy:
+    needs: cache-and-install
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
