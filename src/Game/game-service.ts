@@ -69,7 +69,7 @@ export const gameService = {
     return square;
   },
 
-  squaresAreDifferent: (a: Square[], b: Square[]) => {
+  isEqual: (a: Square[], b: Square[]) => {
     const encoded = new Set(a.map(({ x, y }) => `${x}${y}`));
     const matched = b.filter(({ x, y }) => encoded.has(`${x}${y}`));
     return matched.length !== encoded.size;

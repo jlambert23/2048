@@ -29,7 +29,7 @@ export const useGame = (initialState: Square[] = []) => {
       }
     })();
 
-    if (updated && gameService.squaresAreDifferent(squares, updated)) {
+    if (updated && gameService.isEqual(squares, updated)) {
       setSquares([...updated, gameService.generateSquare()]);
     }
   }, [leftPressed, rightPressed, upPressed, downPressed]);
