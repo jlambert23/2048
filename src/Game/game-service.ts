@@ -17,18 +17,18 @@ const sortMap: Record<Direction, (a: Square, b: Square) => number> = {
   down: (a, b) => b.y - a.y,
 };
 
-const toMap: Record<Direction, (group: Square[]) => Partial<Square>> = {
-  left: (group) => ({ x: group[group.length - 1]?.x + 1 || 0 }),
-  right: (group) => ({ x: group[group.length - 1]?.x - 1 || BOARD_SIZE - 1 }),
-  up: (group) => ({ y: group[group.length - 1]?.y + 1 || 0 }),
-  down: (group) => ({ y: group[group.length - 1]?.y - 1 || BOARD_SIZE - 1 }),
+const calcMap: Record<Direction, (s?: Square) => Partial<Square>> = {
+  left: (square) => ({ x: square ? square.x + 1 : 0 }),
+  right: (square) => ({ x: square ? square.x - 1 : BOARD_SIZE - 1 }),
+  up: (square) => ({ y: square ? square.y + 1 : 0 }),
+  down: (square) => ({ y: square ? square.y - 1 : BOARD_SIZE - 1 }),
 };
 
 export const gameService = {
   move: (direction: Direction) => {
     const key = ["left", "right"].includes(direction) ? "y" : "x";
     const sortFn = sortMap[direction];
-    const to = toMap[direction];
+    const calcPos = calcMap[direction];
 
     const moveGroup = (squares: Square[]) => {
       const sorted = [...squares].sort(sortFn);
@@ -40,7 +40,7 @@ export const gameService = {
           return [...updated.slice(0, -1), { ...last, value: last.value * 2 }];
         }
 
-        return [...updated, { ...square, ...to(updated) }];
+        return [...updated, { ...square, ...calcPos(last) }];
       }, []);
     };
 
