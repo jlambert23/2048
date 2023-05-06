@@ -38,4 +38,4 @@ jobs:
         run: pnpm install
 
       - name: Deploy
-        run: pnpm run deploy
+        run: npm run deploy
