@@ -24,33 +24,30 @@ const calcMap: Record<Direction, (s?: Square) => Partial<Square>> = {
   down: (square) => ({ y: square ? square.y - 1 : BOARD_SIZE - 1 }),
 };
 
+const moveGroup = (direction: Direction, squares: Square[]) => {
+  return [...squares]
+    .sort(sortMap[direction])
+    .reduce<Square[]>((updated, square) => {
+      const last = updated.at(-1);
+
+      // suspend merging block
+      if (last?.value === square.value) {
+        return [...updated.slice(0, -1), { ...last, value: last.value * -2 }];
+      }
+
+      return [...updated, { ...square, ...calcMap[direction](last) }];
+    }, [])
+    .map((square) => ({ ...square, value: Math.abs(square.value) }));
+};
+
 export const gameService = {
   move: (direction: Direction) => {
     const key = ["left", "right"].includes(direction) ? "y" : "x";
-    const sortFn = sortMap[direction];
-    const calcPos = calcMap[direction];
-
-    const moveGroup = (squares: Square[]) => {
-      const sorted = [...squares].sort(sortFn);
-      return sorted.reduce<Square[]>((updated, square) => {
-        const last = updated.at(-1);
-
-        // merge squares
-        if (last?.value === square.value) {
-          return [...updated.slice(0, -1), { ...last, value: last.value * 2 }];
-        }
-
-        return [...updated, { ...square, ...calcPos(last) }];
-      }, []);
-    };
-
-    return (squares: Square[]) => {
-      const groups = Object.values(groupBy(squares, key));
-      return groups.reduce<Square[]>(
-        (updated, group) => [...updated, ...moveGroup(group)],
+    return (squares: Square[]) =>
+      Object.values(groupBy(squares, key)).reduce<Square[]>(
+        (updated, group) => [...updated, ...moveGroup(direction, group)],
         []
       );
-    };
   },
 
   generateSquare: (square?: Partial<Square>) => {
