@@ -1,6 +1,6 @@
 import { Card, SimpleGrid } from "@mantine/core";
 import { Square } from "./Square";
-import { BOARD_SIZE } from "./game.util";
+import { BOARD_SIZE } from "./game-service";
 import { useGame } from "./use-game";
 import { useMemo } from "react";
 

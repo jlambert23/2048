@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BOARD_SIZE, Square, gameService } from "./game.util";
+import { BOARD_SIZE, Square, gameService } from "./game-service";
 import { useKeyPress } from "../core/use-key-press";
 
 export const useGame = (initialState: Square[] = []) => {
