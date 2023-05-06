@@ -18,18 +18,8 @@ const Game = () => {
         {board.map((_, i) => {
           const x = i % BOARD_SIZE;
           const y = Math.floor(i / BOARD_SIZE);
-          const value = squares.find((s) => x === s.x && y === s.y)?.value;
-
-          const color = (() => {
-            const idx = Math.log2(value || 0) % 3;
-            return (["blue", "red", "green"] as const)[idx];
-          })();
-
-          return (
-            <Square key={`${x},${y}`} color={color}>
-              {value}
-            </Square>
-          );
+          const square = squares.find((s) => s.x === x && s.y === y);
+          return <Square key={`${x},${y}`} square={square} />;
         })}
       </SimpleGrid>
     </Card>
