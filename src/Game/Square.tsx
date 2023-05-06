@@ -1,19 +1,30 @@
 import { Card, Center, useMantineTheme } from "@mantine/core";
 import { useMemo } from "react";
 
-export const Square = ({ children }: { children?: number }) => {
+type Props = {
+  children?: number;
+  color: "blue" | "green" | "red";
+};
+
+export const Square = ({ children, color }: Props) => {
   const { colors } = useMantineTheme();
 
   const styles = useMemo(() => {
+    const colorMap = {
+      blue: colors.blue[8],
+      green: colors.green[8],
+      red: colors.red[8],
+    };
+
     return children
       ? {
           color: colors.white,
-          backgroundColor: colors.green[8],
+          backgroundColor: colorMap[color],
         }
       : {
           backgroundColor: colors.dark[4],
         };
-  }, [children]);
+  }, [children, color]);
 
   return (
     <Card withBorder sx={{ aspectRatio: "1 / 1", ...styles }}>
