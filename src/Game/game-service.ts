@@ -53,20 +53,13 @@ export const gameService = {
     };
   },
 
-  generateSquare: (squares: Square[] = [], value = 2) => {
-    if (squares.length >= Math.pow(BOARD_SIZE, 2)) {
-      throw new Error("Cannot generate squares; board is full");
-    }
-
+  generateSquare: (square?: Partial<Square>) => {
     const getRandomPos = () => Math.floor(Math.random() * BOARD_SIZE);
-    const square: Square = { x: getRandomPos(), y: getRandomPos(), value };
-
-    while (squares.some((s) => s.x === square.x && s.y === square.y)) {
-      square.x = getRandomPos();
-      square.y = getRandomPos();
-    }
-
-    return square;
+    return {
+      x: square?.x ?? getRandomPos(),
+      y: square?.y ?? getRandomPos(),
+      value: square?.value ?? 2,
+    };
   },
 
   isEqual: (a: Square[], b: Square[]) => {
