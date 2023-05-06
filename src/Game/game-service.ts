@@ -67,4 +67,14 @@ export const gameService = {
     const matched = b.filter(({ x, y }) => encoded.has(`${x}${y}`));
     return matched.length !== encoded.size;
   },
+
+  toString: (squares: Square[]) => {
+    const board = [...new Array(BOARD_SIZE)].map(() =>
+      [...new Array(BOARD_SIZE)].fill(".")
+    );
+    for (const square of squares) {
+      board[square.y][square.x] = square.value;
+    }
+    return board.map((row) => row.join(" ")).join("\n");
+  },
 };

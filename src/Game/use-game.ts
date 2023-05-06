@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BOARD_SIZE, Square, gameService } from "./game-service";
+import { Square, gameService } from "./game-service";
 import { useInput } from "./use-input";
 
 export const useGame = (initialState: Square[] = []) => {
@@ -8,6 +8,10 @@ export const useGame = (initialState: Square[] = []) => {
     gameService.generateSquare(),
   ]);
   const updated = useInput(squares);
+
+  useEffect(() => {
+    console.log(gameService.toString(squares));
+  }, [squares]);
 
   useEffect(() => {
     if (updated && gameService.isEqual(squares, updated)) {
