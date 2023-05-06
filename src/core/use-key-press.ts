@@ -5,12 +5,12 @@ const useKeyPress = (targetKey: string) => {
 
   useEffect(() => {
     const keydown = (e: KeyboardEvent) => {
-      if (e.key === targetKey) {
+      if (e.key.toLowerCase() === targetKey.toLowerCase()) {
         setKeyPressed(true);
       }
     };
     const keyup = (e: KeyboardEvent) => {
-      if (e.key === targetKey) {
+      if (e.key.toLowerCase() === targetKey.toLowerCase()) {
         setKeyPressed(false);
       }
     };

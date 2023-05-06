@@ -7,6 +7,7 @@ export const useInput = (squares: Square[]) => {
   const rightPressed = useKeyPress("ArrowRight");
   const upPressed = useKeyPress("ArrowUp");
   const downPressed = useKeyPress("ArrowDown");
+  const restartPressed = useKeyPress("R");
 
   const updated = useMemo(() => {
     if (leftPressed) {
@@ -21,7 +22,10 @@ export const useInput = (squares: Square[]) => {
     if (downPressed) {
       return gameService.move("down")(squares);
     }
-  }, [leftPressed, rightPressed, upPressed, downPressed]);
+    if (restartPressed) {
+      return [];
+    }
+  }, [leftPressed, rightPressed, upPressed, downPressed, restartPressed]);
 
   return updated;
 };
