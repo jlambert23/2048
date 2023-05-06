@@ -74,4 +74,8 @@ export const gameService = {
     }
     return board.map((row) => row.join(" ")).join("\n");
   },
+
+  checkGameOver: (squares: Square[]) => {
+    return squares.length >= Math.pow(BOARD_SIZE, 2);
+  },
 };

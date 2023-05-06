@@ -14,7 +14,11 @@ export const useGame = (initialState: Square[] = []) => {
   }, [squares]);
 
   useEffect(() => {
-    if (updated && gameService.isEqual(squares, updated)) {
+    if (
+      updated &&
+      gameService.isEqual(squares, updated) &&
+      !gameService.checkGameOver(squares)
+    ) {
       let newSquare = gameService.generateSquare();
       // eslint-disable-next-line no-loop-func
       while (updated.some((s) => s.x === newSquare.x && s.y === newSquare.y)) {
