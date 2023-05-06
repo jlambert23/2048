@@ -24,52 +24,54 @@ const toMap: Record<Direction, (group: Square[]) => Partial<Square>> = {
   down: (group) => ({ y: group[group.length - 1]?.y - 1 || BOARD_SIZE - 1 }),
 };
 
-export const move = (direction: Direction) => {
-  const key = ["left", "right"].includes(direction) ? "y" : "x";
-  const sortFn = sortMap[direction];
-  const to = toMap[direction];
+export const gameService = {
+  move: (direction: Direction) => {
+    const key = ["left", "right"].includes(direction) ? "y" : "x";
+    const sortFn = sortMap[direction];
+    const to = toMap[direction];
 
-  const moveGroup = (squares: Square[]) => {
-    const sorted = squares.sort(sortFn);
-    return sorted.reduce<Square[]>((updated, square) => {
-      const last = updated.at(-1);
+    const moveGroup = (squares: Square[]) => {
+      const sorted = [...squares].sort(sortFn);
+      return sorted.reduce<Square[]>((updated, square) => {
+        const last = updated.at(-1);
 
-      // merge squares
-      if (last?.value === square.value) {
-        return [...updated.slice(0, -1), { ...last, value: last.value * 2 }];
-      }
+        // merge squares
+        if (last?.value === square.value) {
+          return [...updated.slice(0, -1), { ...last, value: last.value * 2 }];
+        }
 
-      return [...updated, { ...square, ...to(updated) }];
-    }, []);
-  };
+        return [...updated, { ...square, ...to(updated) }];
+      }, []);
+    };
 
-  return (squares: Square[]) => {
-    const groups = Object.values(groupBy(squares, key));
-    return groups.reduce<Square[]>(
-      (updated, group) => [...updated, ...moveGroup(group)],
-      []
-    );
-  };
-};
+    return (squares: Square[]) => {
+      const groups = Object.values(groupBy(squares, key));
+      return groups.reduce<Square[]>(
+        (updated, group) => [...updated, ...moveGroup(group)],
+        []
+      );
+    };
+  },
 
-export const generateSquare = (squares: Square[] = [], value = 2) => {
-  if (squares.length >= Math.pow(BOARD_SIZE, 2)) {
-    throw new Error("Cannot generate squares; board is full");
-  }
+  generateSquare: (squares: Square[] = [], value = 2) => {
+    if (squares.length >= Math.pow(BOARD_SIZE, 2)) {
+      throw new Error("Cannot generate squares; board is full");
+    }
 
-  const getRandomPos = () => Math.floor(Math.random() * BOARD_SIZE);
-  const square: Square = { x: getRandomPos(), y: getRandomPos(), value };
+    const getRandomPos = () => Math.floor(Math.random() * BOARD_SIZE);
+    const square: Square = { x: getRandomPos(), y: getRandomPos(), value };
 
-  while (squares.some((s) => s.x === square.x && s.y === square.y)) {
-    square.x = getRandomPos();
-    square.y = getRandomPos();
-  }
+    while (squares.some((s) => s.x === square.x && s.y === square.y)) {
+      square.x = getRandomPos();
+      square.y = getRandomPos();
+    }
 
-  return square;
-};
+    return square;
+  },
 
-export const squaresAreDifferent = (a: Square[], b: Square[]) => {
-  const encoded = new Set(a.map(({ x, y }) => `${x}${y}`));
-  const matched = b.filter(({ x, y }) => encoded.has(`${x}${y}`));
-  return matched.length !== encoded.size;
+  squaresAreDifferent: (a: Square[], b: Square[]) => {
+    const encoded = new Set(a.map(({ x, y }) => `${x}${y}`));
+    const matched = b.filter(({ x, y }) => encoded.has(`${x}${y}`));
+    return matched.length !== encoded.size;
+  },
 };

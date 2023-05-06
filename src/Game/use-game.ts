@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  BOARD_SIZE,
-  Square,
-  generateSquare,
-  move,
-  squaresAreDifferent,
-} from "./game.util";
+import { BOARD_SIZE, Square, gameService } from "./game.util";
 import { useKeyPress } from "../core/use-key-press";
 
 export const useGame = (initialState: Square[] = []) => {
   const [squares, setSquares] = useState<Square[]>([
     ...initialState,
-    generateSquare(),
+    gameService.generateSquare(),
   ]);
 
   const leftPressed = useKeyPress("ArrowLeft");
@@ -22,21 +16,21 @@ export const useGame = (initialState: Square[] = []) => {
   useEffect(() => {
     const updated = (() => {
       if (leftPressed) {
-        return move("left")(squares);
+        return gameService.move("left")(squares);
       }
       if (rightPressed) {
-        return move("right")(squares);
+        return gameService.move("right")(squares);
       }
       if (upPressed) {
-        return move("up")(squares);
+        return gameService.move("up")(squares);
       }
       if (downPressed) {
-        return move("down")(squares);
+        return gameService.move("down")(squares);
       }
     })();
 
-    if (updated && squaresAreDifferent(squares, updated)) {
-      setSquares([...updated, generateSquare()]);
+    if (updated && gameService.squaresAreDifferent(squares, updated)) {
+      setSquares([...updated, gameService.generateSquare()]);
     }
   }, [leftPressed, rightPressed, upPressed, downPressed]);
 
