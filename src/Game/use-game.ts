@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
-import { Square, move } from "./game.util";
+import {
+  BOARD_SIZE,
+  Square,
+  generateSquare,
+  move,
+  squaresAreDifferent,
+} from "./game.util";
 import { useKeyPress } from "../core/use-key-press";
 
-export const useGame = (initialState: Square[]) => {
-  const [squares, setSquares] = useState<Square[]>(initialState);
+export const useGame = (initialState: Square[] = []) => {
+  const [squares, setSquares] = useState<Square[]>([
+    ...initialState,
+    generateSquare(),
+  ]);
 
   const leftPressed = useKeyPress("ArrowLeft");
   const rightPressed = useKeyPress("ArrowRight");
@@ -11,17 +20,23 @@ export const useGame = (initialState: Square[]) => {
   const downPressed = useKeyPress("ArrowDown");
 
   useEffect(() => {
-    if (leftPressed) {
-      setSquares(move("left")(squares));
-    }
-    if (rightPressed) {
-      setSquares(move("right")(squares));
-    }
-    if (upPressed) {
-      setSquares(move("up")(squares));
-    }
-    if (downPressed) {
-      setSquares(move("down")(squares));
+    const updated = (() => {
+      if (leftPressed) {
+        return move("left")(squares);
+      }
+      if (rightPressed) {
+        return move("right")(squares);
+      }
+      if (upPressed) {
+        return move("up")(squares);
+      }
+      if (downPressed) {
+        return move("down")(squares);
+      }
+    })();
+
+    if (updated && squaresAreDifferent(squares, updated)) {
+      setSquares([...updated, generateSquare()]);
     }
   }, [leftPressed, rightPressed, upPressed, downPressed]);
 

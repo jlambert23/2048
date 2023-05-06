@@ -51,3 +51,25 @@ export const move = (direction: Direction) => {
     );
   };
 };
+
+export const generateSquare = (squares: Square[] = [], value = 2) => {
+  if (squares.length >= Math.pow(BOARD_SIZE, 2)) {
+    throw new Error("Cannot generate squares; board is full");
+  }
+
+  const getRandomPos = () => Math.floor(Math.random() * BOARD_SIZE);
+  const square: Square = { x: getRandomPos(), y: getRandomPos(), value };
+
+  while (squares.some((s) => s.x === square.x && s.y === square.y)) {
+    square.x = getRandomPos();
+    square.y = getRandomPos();
+  }
+
+  return square;
+};
+
+export const squaresAreDifferent = (a: Square[], b: Square[]) => {
+  const encoded = new Set(a.map(({ x, y }) => `${x}${y}`));
+  const matched = b.filter(({ x, y }) => encoded.has(`${x}${y}`));
+  return matched.length !== encoded.size;
+};

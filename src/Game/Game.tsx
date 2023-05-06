@@ -5,11 +5,7 @@ import { useGame } from "./use-game";
 import { useMemo } from "react";
 
 const Game = () => {
-  const { squares } = useGame([
-    { x: 1, y: 1, value: 2048 },
-    { x: 3, y: 3, value: 1024 },
-    { x: 2, y: 3, value: 1024 },
-  ]);
+  const { squares } = useGame();
 
   const board = useMemo(
     () => [...new Array(Math.pow(BOARD_SIZE, 2))],
