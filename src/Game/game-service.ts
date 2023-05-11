@@ -76,6 +76,7 @@ export const gameService = {
   },
 
   checkGameOver: (squares: Square[]) => {
+    // TODO: fix game unable to continue when board is full
     return squares.length >= Math.pow(BOARD_SIZE, 2);
   },
 };
